@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendationservice
+spec:
+  template:
+    spec:
+      containers:
+      - name: server
+        resources:
+          requests:
+            cpu: 50m
+          limits:
+            cpu: 100m
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adservice
+spec:
+  template:
+    spec:
+      containers:
+      - name: server
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: 150m
