@@ -1,0 +1,53 @@
+---
+- hosts: loadgenerator-vm
+
+  vars:
+    image_tar: "{{ lookup('env', 'LOADGENERATOR_IMAGE_PATH') }}"
+    image_name: loadgenerator:latest
+    container_name: loadgenerator
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+
+  tasks:
+    - name: Show environment variables
+      debug:
+        msg:
+          FRONTEND_ADDR: "{{ lookup('env', 'FRONTEND_ADDR') }}"
+          USERS: "{{ lookup('env', 'USERS') }}"
+          RATE: "{{ lookup('env', 'RATE') }}"
+          IMAGE_TAR: "{{ lookup('env', 'LOADGENERATOR_IMAGE_PATH') }}"
+            
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start and enable Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Copy Docker image tar to VM
+      copy:
+        src: "{{ image_tar }}"
+        dest: /tmp/{{ image_tar }}
+
+    - name: Load Docker image from tar
+      command: docker load -i /tmp/{{ image_tar }}
+
+    - name: Run loadgenerator container
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ image_name }}"
+        state: started
+        restart_policy: always      
+        env: 
+          FRONTEND_ADDR: "{{ lookup('env', 'FRONTEND_ADDR') }}"
+          USERS: "{{ lookup('env', 'USERS') }}"
+          RATE: "{{ lookup('env', 'RATE') }}"
+
+
+
+
+
