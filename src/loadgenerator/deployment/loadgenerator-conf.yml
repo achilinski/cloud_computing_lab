@@ -1,6 +1,5 @@
 ---
 - hosts: loadgenerator-vm
-
   vars:
     image_tar: "{{ lookup('env', 'LOADGENERATOR_IMAGE_PATH') }}"
     image_name: loadgenerator:latest
@@ -14,8 +13,7 @@
           FRONTEND_ADDR: "{{ lookup('env', 'FRONTEND_ADDR') }}"
           USERS: "{{ lookup('env', 'USERS') }}"
           RATE: "{{ lookup('env', 'RATE') }}"
-          IMAGE_TAR: "{{ lookup('env', 'LOADGENERATOR_IMAGE_PATH') }}"
-            
+          IMAGE_TAR: "{{ lookup('env', 'LOADGENERATOR_IMAGE_PATH') }}"             
     - name: Install Docker
       apt:
         name: docker.io

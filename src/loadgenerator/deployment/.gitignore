@@ -30,3 +30,7 @@ override.tf.backup
 *_override.tf.backup
 
 inventory
+
+terraform-service.json
+*.tar
+

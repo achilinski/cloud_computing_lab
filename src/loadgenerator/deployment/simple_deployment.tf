@@ -26,6 +26,10 @@ resource "google_compute_instance" "vm_instance" {
     access_config {
     }
   }
+
+  provisioner "local-exec" {
+    command = "sleep 10"  # allow VM to fully boot
+  }  
 }
 
 // A variable for extracting the external ip of the instance
