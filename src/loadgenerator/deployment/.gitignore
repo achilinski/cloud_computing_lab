@@ -34,3 +34,5 @@ inventory
 terraform-service.json
 *.tar
 
+results/
+

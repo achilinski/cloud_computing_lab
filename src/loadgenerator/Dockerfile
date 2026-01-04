@@ -40,4 +40,5 @@ COPY locustfile.py .
 # enable gevent support in debugger
 ENV GEVENT_SUPPORT=True
 
-ENTRYPOINT locust --host="http://${FRONTEND_ADDR}" --headless -u "${USERS:-10}" -r "${RATE:-1}" 2>&1
+ENTRYPOINT mkdir -p /locust/csv && \
+locust --host="http://${FRONTEND_ADDR}" --headless -u "${USERS}" -r "${RATE}" --run-time "${RUN_TIME}" --csv="/locust/csv/example" --exit-code-on-error 0 2>&1

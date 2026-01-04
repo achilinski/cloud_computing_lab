@@ -9,7 +9,7 @@ provider "google" {
 
 
 resource "google_compute_instance" "vm_instance" {
-  count        = 1
+  count        = var.vm_count
   name         = "${var.instance_name}-${count.index}"
 
   machine_type = "e2-medium"
@@ -26,13 +26,9 @@ resource "google_compute_instance" "vm_instance" {
     access_config {
     }
   }
-
-  provisioner "local-exec" {
-    command = "sleep 10"  # allow VM to fully boot
-  }  
 }
 
 // A variable for extracting the external ip of the instance
-output "ip" {
- value = "${google_compute_instance.vm_instance[0].network_interface.0.access_config.0.nat_ip}"
+output "ips" {
+  value = { for k, vm in google_compute_instance.vm_instance : k => vm.network_interface[0].access_config[0].nat_ip }
 }

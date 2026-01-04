@@ -1,10 +1,14 @@
 ---
 - hosts: loadgenerator-vm
+  gather_facts: false
+  
   vars:
     image_tar: "{{ lookup('env', 'LOADGENERATOR_IMAGE_PATH') }}"
     image_name: loadgenerator:latest
     container_name: loadgenerator
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+    local_results_dir: "{{ playbook_dir }}/results"
+    
 
   tasks:
     - name: Show environment variables
@@ -13,7 +17,12 @@
           FRONTEND_ADDR: "{{ lookup('env', 'FRONTEND_ADDR') }}"
           USERS: "{{ lookup('env', 'USERS') }}"
           RATE: "{{ lookup('env', 'RATE') }}"
-          IMAGE_TAR: "{{ lookup('env', 'LOADGENERATOR_IMAGE_PATH') }}"             
+          RUN_TIME: "{{ lookup('env', 'RUN_TIME') }}"
+          IMAGE_TAR: "{{ lookup('env', 'LOADGENERATOR_IMAGE_PATH') }}"    
+
+    - name: Wait for connection (600s default)
+      wait_for_connection:                   
+
     - name: Install Docker
       apt:
         name: docker.io
@@ -39,13 +48,35 @@
         name: "{{ container_name }}"
         image: "{{ image_name }}"
         state: started
-        restart_policy: always      
+        restart_policy: no      
+        detach: no
         env: 
           FRONTEND_ADDR: "{{ lookup('env', 'FRONTEND_ADDR') }}"
           USERS: "{{ lookup('env', 'USERS') }}"
           RATE: "{{ lookup('env', 'RATE') }}"
+          RUN_TIME: "{{ lookup('env', 'RUN_TIME') }}"
+        volumes:
+        - /tmp/locust:/locust/csv        
 
+    - name: Ensure rsync is installed on remote host
+      apt:
+        name: rsync
+        state: present
+      become: yes
 
+    - name: Ensure local results directory for each host exists
+      delegate_to: localhost
+      become: false 
+      file:
+        path: "{{ local_results_dir }}/{{ inventory_hostname }}/"
+        state: directory
+        mode: '0777'  
+       
+    - name: Copy file and set permissions with Ansible
+      synchronize:
+              src: /tmp/locust/
+              dest: "{{ local_results_dir }}/{{ inventory_hostname }}"
+              mode: pull
 
 
 

@@ -18,4 +18,12 @@ variable "service_file" {
   default = "terraform-service.json"
 }
 
+variable "user_id" {
+  default = "user"
+}
+
+variable "vm_count" {
+  default = 1
+}
+
 
