@@ -40,6 +40,8 @@ export TF_VAR_vm_count=$VM_COUNT
 
 export LOADGENERATOR_IMAGE_PATH="./loadgenerator.tar"
 
+export CLIENTS=$(( USERS * VM_COUNT ))
+
 ### Start VM with terraform
 
 terraform init

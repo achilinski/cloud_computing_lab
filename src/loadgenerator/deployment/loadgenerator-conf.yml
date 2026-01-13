@@ -7,7 +7,7 @@
     image_name: loadgenerator:latest
     container_name: loadgenerator
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
-    local_results_dir: "{{ playbook_dir }}/results"
+    local_results_dir: "{{ playbook_dir }}/results/{{ lookup('env', 'CLIENTS') }}"
     
 
   tasks:
