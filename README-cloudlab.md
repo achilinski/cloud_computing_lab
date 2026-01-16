@@ -29,7 +29,43 @@ docker build -t load-server:latest .
 docker run --rm -e FRONTEND_ADDR="[FRONTEND_IP]" --name my-load-test load-server:latest
 ```
 
-## 3. Canary Release with Istio (Section 2.3)
+## 3. Automatically Deploying the Load Generator on Google Cloud
+
+The load generator can be deployed using the single script `deploy_loadgenerator.sh`.  
+The only required step is to adjust the configuration at the top of the file (frontend address etc).
+
+The script will build the Docker image and deploy the load generator on Google Cloud Platform (GCP).
+
+### To run the deployment:
+
+```bash
+cd ./src/loadgenerator/deployment
+./deploy_loadgenerator.sh
+```
+
+## 4. Monitoring the Application and Infrastructure
+
+The `./observability` directory contains all the files and configuration needed to run **Prometheus** and **Grafana**.  
+It also includes a README file with the required commands and setup instructions.
+
+Refer to:
+
+```text
+./observability/README.md
+```
+
+## 5. Performance Evaluation
+
+For the performance evaluation, run the load generator similarly to **Step 3**, but with a different configuration inside the script (e.g., number of VMs, etc.).
+
+### Run the load generator
+
+```bash
+cd ./src/loadgenerator/deployment
+./deploy_loadgenerator.sh
+```
+
+## 6. Canary Release with Istio (Section 2.3)
 These commands cover resizing the cluster for Istio, installing the service mesh, and managing the traffic split.
 
 ### Cluster Preparation & Istio Install

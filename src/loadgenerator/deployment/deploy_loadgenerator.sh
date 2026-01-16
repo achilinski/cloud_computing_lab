@@ -1,6 +1,6 @@
 
 # loadgenerator config
-export FRONTEND_ADDR="34.65.49.161"
+export FRONTEND_ADDR=""
 export USERS=200
 export RATE=50
 export RUN_TIME="2m"
@@ -31,8 +31,8 @@ fi
 
 export GCP_userID=$(gcloud config get-value account | sed 's/[@.]/_/g')
 export TF_VAR_project=$(gcloud config get-value project)
-export TF_VAR_region="europe-west1" #$(gcloud config get-value compute/region)
-export TF_VAR_zone="europe-west1-b" #$(gcloud config get-value compute/zone)
+export TF_VAR_region=$(gcloud config get-value compute/region)
+export TF_VAR_zone=$(gcloud config get-value compute/zone)
 export TF_VAR_instance_name="my-loadgenerator"
 export TF_VAR_service_file=$GCP_privateKeyFile
 export TF_VAR_user_id=$GCP_userID
