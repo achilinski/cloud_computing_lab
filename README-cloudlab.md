@@ -29,7 +29,7 @@ docker build -t load-server:latest .
 docker run --rm -e FRONTEND_ADDR="[FRONTEND_IP]" --name my-load-test load-server:latest
 ```
 
-## 3. Automatically Deploying the Load Generator on Google Cloud
+## 3. Automatically Deploying the Load Generator on Google Cloud (Section 1.4)
 
 The load generator can be deployed using the single script `deploy_loadgenerator.sh`.  
 The only required step is to adjust the configuration at the top of the file (frontend address etc).
@@ -43,7 +43,7 @@ cd ./src/loadgenerator/deployment
 ./deploy_loadgenerator.sh
 ```
 
-## 4. Monitoring the Application and Infrastructure
+## 4. Monitoring the Application and Infrastructure (Section 2.1)
 
 The `./observability` directory contains all the files and configuration needed to run **Prometheus** and **Grafana**.  
 It also includes a README file with the required commands and setup instructions.
@@ -54,7 +54,7 @@ Refer to:
 ./observability/README.md
 ```
 
-## 5. Performance Evaluation
+## 5. Performance Evaluation (Section 2.2)
 
 For the performance evaluation, run the load generator similarly to **Step 3**, but with a different configuration inside the script (e.g., number of VMs, etc.).
 
